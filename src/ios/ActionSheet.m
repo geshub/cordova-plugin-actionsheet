@@ -62,14 +62,19 @@
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
+          
+          // WK Fixed centering on IPAD 
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
               [self.alertController setModalPresentationStyle:UIModalPresentationPopover];
               UIPopoverPresentationController *popPresenter = [self.alertController popoverPresentationController];
-              popPresenter.sourceView = self.webView.superview;
+              // popPresenter.sourceView = self.webView.superview;
               if (position == nil) {
                 NSLog(@"Because the 'postion' param is not set, on iPad the popup is shown in the top left corner.");
               }
-              popPresenter.sourceRect = [self getPopupRectFromIPadPopupCoordinates:(position != nil ? position : @[@40, @20])];
+              //popPresenter.sourceRect = [self getPopupRectFromIPadPopupCoordinates:(position != nil ? position : @[@40, @20])];
+            [popPresenter setPermittedArrowDirections:0];          
+            popPresenter.sourceView = self.webView.superview;
+            popPresenter.sourceRect = CGRectMake(CGRectGetMidX(self.webView.bounds), CGRectGetMidY(self.webView.bounds),0,0);
             }
             [self.viewController presentViewController:self.alertController animated:YES completion:nil];
         });
